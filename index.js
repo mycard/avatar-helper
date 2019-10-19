@@ -11,7 +11,7 @@ const https_options = {
 
 const https_server = https.createServer(https_options, (request, response) => {
 	const u = url.parse(request.url, false);
-	const path_match = u.pathname.match(/^\/(.+)\.png$/);
+	const path_match = u.pathname.match(/^\/user_avatar\/ygobbs.com\/(.+)\/\d+\/\d+_2\.png$/);
 	if (!path_match) { 
 		response.writeHead(403);
 		response.end("Invalid pathname.");
