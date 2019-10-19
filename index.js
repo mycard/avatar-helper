@@ -17,7 +17,8 @@ const https_server = https.createServer(https_options, (request, response) => {
 		response.end("Invalid pathname.");
 		return;
 	}
-	const username = encodeURIComponent(path_match[1]);
+	//const username = encodeURIComponent(path_match[1]);
+	const username = path_match[1];
 	console.log("REQUEST", username);
 	_request({
 		url: "https://ygobbs.com/users/" + username + ".json",
@@ -35,7 +36,11 @@ const https_server = https.createServer(https_options, (request, response) => {
 				console.log("FALLBACK", username);
 				request_avatar(response, username);
 			} else { 
-				const real_username = encodeURIComponent(body.users[0].username);
+				const real_user = body.users[0].username;
+				var real_username = encodeURIComponent(real_user);
+				if (real_user.match(/[a-z0-9]{20}/)) { //random username
+					real_username = encodeURIComponent(body.users[0].name);
+				}
 				request_avatar(response, real_username);
 			}
 	});
