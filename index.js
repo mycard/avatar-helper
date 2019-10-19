@@ -38,7 +38,7 @@ const https_server = https.createServer(https_options, (request, response) => {
 			} else { 
 				const real_user = body.user.username;
 				var real_username = encodeURIComponent(real_user);
-				if (real_user.match(/[a-z0-9]{20}/)) || (real_user.match(/[0-9]{1,6}/)) { //random username
+				if (real_user.match(/[a-z0-9]{20}/) || real_user.match(/[0-9]{1,6}/)) { //random username
 					real_username = encodeURIComponent(body.user.name);
 				}
 				request_avatar(response, real_username);
