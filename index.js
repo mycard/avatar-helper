@@ -32,7 +32,7 @@ const https_server = https.createServer(https_options, (request, response) => {
 				console.log("BAD USERNAME JSON", body);
 			} else if (!body.users) {
 				response.writeHead(404);
-				response.end("Not found.");
+				response.end("User not found.");
 			} else { 
 				const real_username = encodeURIComponent(body.users[0].username);
 				_request({
@@ -44,7 +44,7 @@ const https_server = https.createServer(https_options, (request, response) => {
 							console.error("REQUEST ERROR", error);
 						} else if (body == "{\"message\":\"Not Found\"}") {
 							response.writeHead(404);
-							response.end("Not found.");
+							response.end("Avatar not found.");
 						} else {
 							//console.log(body);
 							_request({
