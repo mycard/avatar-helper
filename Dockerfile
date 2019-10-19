@@ -1,4 +1,4 @@
-FROM node:12.12.0-buster-slim
+FROM node
 COPY . /usr/src/app
 WORKDIR /usr/src/app
 RUN npm ci
