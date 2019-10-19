@@ -19,7 +19,7 @@ const https_server = https.createServer(https_options, (request, response) => {
 	}
 	const username = path_match[1];
 	_request({
-		url: "https://ygobbs.com/users/" + encodeURIComponent(username) + ".json",
+		url: "https://ygobbs.com/users/" + username + ".json",
 		json: true
 	}, (error, res, body) => { 
 			if (error) {
