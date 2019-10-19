@@ -18,6 +18,7 @@ const https_server = https.createServer(https_options, (request, response) => {
 		return;
 	}
 	const username = path_match[1];
+	console.log("REQUEST", username);
 	_request({
 		url: "https://ygobbs.com/users/" + username + ".json",
 		json: true
