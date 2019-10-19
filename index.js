@@ -29,8 +29,9 @@ const https_server = https.createServer(https_options, (request, response) => {
 			} else if (typeof (body) === "string") {
 				response.writeHead(500);
 				response.end("Bad username JSON.");
-				console.log("BAD USERNAME JSON", body);
+				console.error("BAD USERNAME JSON", body);
 			} else if (!body.users) {
+				console.log("FALLBACK", username);
 				request_avatar(response, username);
 			} else { 
 				const real_username = body.users[0].username;
