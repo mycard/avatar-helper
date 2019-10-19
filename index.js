@@ -17,7 +17,7 @@ const https_server = https.createServer(https_options, (request, response) => {
 		response.end("Invalid pathname.");
 		return;
 	}
-	const username = path_match[1];
+	const username = encodeURIComponent(path_match[1]);
 	console.log("REQUEST", username);
 	_request({
 		url: "https://ygobbs.com/users/" + username + ".json",
@@ -35,7 +35,7 @@ const https_server = https.createServer(https_options, (request, response) => {
 				console.log("FALLBACK", username);
 				request_avatar(response, username);
 			} else { 
-				const real_username = body.users[0].username;
+				const real_username = encodeURIComponent(body.users[0].username);
 				request_avatar(response, real_username);
 			}
 	});
@@ -43,7 +43,7 @@ const https_server = https.createServer(https_options, (request, response) => {
 
 function request_avatar(response, username) { 
 	_request({
-		url: "https://api.moecube.com/accounts/users/" + encodeURIComponent(username) + ".avatar"
+		url: "https://api.moecube.com/accounts/users/" + username + ".avatar"
 	}, (error, res, body) => {
 			if (error) {
 				response.writeHead(500);
