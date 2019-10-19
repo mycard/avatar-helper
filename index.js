@@ -31,10 +31,10 @@ const https_server = https.createServer(https_options, (request, response) => {
 				response.end("Bad username JSON.");
 				console.log("BAD USERNAME JSON", body);
 			} else if (!body.users) {
-				request_avatar(username);
+				request_avatar(response, username);
 			} else { 
 				const real_username = body.users[0].username;
-				request_avatar(real_username);
+				request_avatar(response, real_username);
 			}
 	});
 });
