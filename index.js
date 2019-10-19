@@ -53,7 +53,7 @@ function request_avatar(response, username, fallback_username) {
 					response.end("Request error.");
 				}
 				console.error("REQUEST ERROR", error);
-			} else if (body == "{\"message\":\"Not Found\"}" || body == "{\"message\":\"Authentication Error\"}") {
+			} else if (!body.startsWith("http")) {
 				if (fallback_username) {
 					request_avatar(response, fallback_username);
 				} else { 
