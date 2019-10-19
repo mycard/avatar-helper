@@ -36,27 +36,30 @@ const https_server = https.createServer(https_options, (request, response) => {
 				//console.log("FALLBACK", username);
 				request_avatar(response, username);
 			} else { 
-				const real_user = body.user.username;
-				var real_username = encodeURIComponent(real_user);
-				if (real_user.match(/[a-z0-9]{20}/) || real_user.match(/[0-9]{1,6}/)) { //random username
-					real_username = encodeURIComponent(body.user.name);
-				}
-				request_avatar(response, real_username);
+				request_avatar(response, encodeURIComponent(body.user.username), encodeURIComponent(body.user.name));
 			}
 	});
 });
 
-function request_avatar(response, username) { 
+function request_avatar(response, username, fallback_username) { 
 	_request({
 		url: "https://api.moecube.com/accounts/users/" + username + ".avatar"
 	}, (error, res, body) => {
 			if (error) {
-				response.writeHead(500);
-				response.end("Request error.");
+				if (fallback_username) {
+					request_avatar(response, fallback_username);
+				} else {
+					response.writeHead(500);
+					response.end("Request error.");
+				}
 				console.error("REQUEST ERROR", error);
 			} else if (body == "{\"message\":\"Not Found\"}" || body == "{\"message\":\"Authentication Error\"}") {
-				response.writeHead(404);
-				response.end("Avatar not found.");
+				if (fallback_username) {
+					request_avatar(response, fallback_username);
+				} else { 
+					response.writeHead(404);
+					response.end("Avatar not found.");
+				}
 			} else {
 				//console.log(body);
 				_request({
@@ -64,9 +67,13 @@ function request_avatar(response, username) {
 					encoding: null
 				}, (error, res, body) => { 
 						if (error) {
-							response.writeHead(500);
-							response.end("Avatar error.");
-							console.error("AVATAR ERROR", error);
+							if (fallback_username) {
+								request_avatar(response, fallback_username);
+							} else {
+								response.writeHead(500);
+								response.end("Avatar error.");
+								console.error("AVATAR ERROR", error);
+							}
 						} else { 
 							var recv_buf = Buffer.from(body, 'binary');
 							response.writeHead(200, { "Content-Type": "image/png" });
