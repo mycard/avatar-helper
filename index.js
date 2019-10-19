@@ -54,7 +54,7 @@ function request_avatar(response, username) {
 				response.writeHead(500);
 				response.end("Request error.");
 				console.error("REQUEST ERROR", error);
-			} else if (body == "{\"message\":\"Not Found\"}") {
+			} else if (body == "{\"message\":\"Not Found\"}" || body == "{\"message\":\"Authentication Error\"}") {
 				response.writeHead(404);
 				response.end("Avatar not found.");
 			} else {
