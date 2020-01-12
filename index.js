@@ -21,6 +21,11 @@ const https_server = https.createServer(https_options, (request, response) => {
 	//const username = encodeURIComponent(path_match[1]);
 	const username = path_match[1];
 	const size = path_match[2];
+	if (size < 1 || size > 600) { 
+		response.writeHead(403);
+		response.end("Invalid size.");
+		return;
+	}
 	//console.log("REQUEST", username);
 	_request({
 		url: "https://ygobbs.com/users/" + username + ".json",
