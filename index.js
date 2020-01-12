@@ -77,7 +77,7 @@ function request_avatar(response, username, fallback_username) {
 							}
 						} else { 
 							var recv_buf = Buffer.from(body, 'binary');
-							gm(recv_buf).resize(25, 25).toBuffer("PNG", (error, dst_buf) => { 
+							gm(recv_buf).resize(120, 120).toBuffer("PNG", (error, dst_buf) => { 
 								if (error) {
 									if (fallback_username) {
 										request_avatar(response, fallback_username);
