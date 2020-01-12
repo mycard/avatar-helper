@@ -3,6 +3,7 @@ const https = require("https");
 const fs = require("fs");
 const _request = require("request");
 const url = require("url");
+const gm = require("gm").subClass({ imageMagick: true });
 
 const https_options = {
 	cert: fs.readFileSync("./certs/fullchain.pem"),
@@ -76,9 +77,20 @@ function request_avatar(response, username, fallback_username) {
 							}
 						} else { 
 							var recv_buf = Buffer.from(body, 'binary');
-							response.writeHead(200, { "Content-Type": "image/png" });
-							fs.writeFileSync("./test.png", recv_buf);
-							response.end(recv_buf);
+							gm(recv_buf).resize(25, 25).toBuffer("PNG", (error, dst_buf) => { 
+								if (error) {
+									if (fallback_username) {
+										request_avatar(response, fallback_username);
+									} else {
+										response.writeHead(500);
+										response.end("Convert error.");
+										console.error("CONVERT ERROR", error);
+									}
+								} else {
+									response.writeHead(200, { "Content-Type": "image/png" });
+									response.end(dst_buf);
+								}
+							});
 						}
 				});
 			}

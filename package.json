@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/mycard/avatar-helper#readme",
   "dependencies": {
+    "gm": "^1.23.1",
     "request": "^2.88.0"
   }
 }
