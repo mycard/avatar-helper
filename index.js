@@ -12,7 +12,7 @@ const https_options = {
 
 const https_server = https.createServer(https_options, (request, response) => {
 	const u = url.parse(request.url, false);
-	const path_match = u.pathname.match(/^\/user_avatar\/ygobbs.com\/(.+)\/\d+\/\d+_2\.png$/);
+	const path_match = u.pathname.match(/^\/user_avatar\/ygobbs.com\/(.+)\/(\d+)\/\d+_2\.png$/);
 	if (!path_match) { 
 		response.writeHead(403);
 		response.end("Invalid pathname.");
@@ -20,6 +20,7 @@ const https_server = https.createServer(https_options, (request, response) => {
 	}
 	//const username = encodeURIComponent(path_match[1]);
 	const username = path_match[1];
+	const size = path_match[2];
 	//console.log("REQUEST", username);
 	_request({
 		url: "https://ygobbs.com/users/" + username + ".json",
@@ -77,7 +78,7 @@ function request_avatar(response, username, fallback_username) {
 							}
 						} else { 
 							var recv_buf = Buffer.from(body, 'binary');
-							gm(recv_buf).resize(120, 120).toBuffer("PNG", (error, dst_buf) => { 
+							gm(recv_buf).resize(size, size).toBuffer("PNG", (error, dst_buf) => { 
 								if (error) {
 									if (fallback_username) {
 										request_avatar(response, fallback_username);
