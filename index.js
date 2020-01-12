@@ -48,13 +48,13 @@ const https_server = https.createServer(https_options, (request, response) => {
 	});
 });
 
-function request_avatar(response, username, fallback_username) { 
+function request_avatar(response, size, username, fallback_username) { 
 	_request({
 		url: "https://api.moecube.com/accounts/users/" + username + ".avatar"
 	}, (error, res, body) => {
 			if (error) {
 				if (fallback_username) {
-					request_avatar(response, fallback_username);
+					request_avatar(response, size, fallback_username);
 				} else {
 					response.writeHead(500);
 					response.end("Request error.");
@@ -62,7 +62,7 @@ function request_avatar(response, username, fallback_username) {
 				console.error("REQUEST ERROR", error);
 			} else if (!body.startsWith("http")) {
 				if (fallback_username) {
-					request_avatar(response, fallback_username);
+					request_avatar(response, size, fallback_username);
 				} else { 
 					response.writeHead(404);
 					response.end("Avatar not found.");
@@ -75,7 +75,7 @@ function request_avatar(response, username, fallback_username) {
 				}, (error, res, body) => { 
 						if (error) {
 							if (fallback_username) {
-								request_avatar(response, fallback_username);
+								request_avatar(response, size, fallback_username);
 							} else {
 								response.writeHead(500);
 								response.end("Avatar error.");
@@ -86,7 +86,7 @@ function request_avatar(response, username, fallback_username) {
 							gm(recv_buf).resize(size, size).toBuffer("PNG", (error, dst_buf) => { 
 								if (error) {
 									if (fallback_username) {
-										request_avatar(response, fallback_username);
+										request_avatar(response, size, fallback_username);
 									} else {
 										response.writeHead(500);
 										response.end("Convert error.");
